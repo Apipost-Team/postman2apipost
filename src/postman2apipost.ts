@@ -374,6 +374,216 @@ const extractApis = (data: IPostman2ApiPost, apiPostObject: object, version: num
 export const Postman2ApiPost = (data: IPostman2ApiPost) => {
   let apiPostObject: object = {};
   try {
+    var Validator = require('jsonschema').validate;
+    var schemaRule = {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "type": "object",
+      "properties": {
+        "info": {
+          "type": "object",
+          "properties": {
+            "_postman_id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "schema": {
+              "type": "string"
+            },
+            "_exporter_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "schema"
+          ]
+        },
+        "item": {
+          "type": "array",
+          "items": [{
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "event": {
+                "type": "array",
+                "items": [{
+                  "type": "object",
+                  "properties": {
+                    "listen": {
+                      "type": "string"
+                    },
+                    "script": {
+                      "type": "object",
+                      "properties": {
+                        "exec": {
+                          "type": "array",
+                          "items": [{
+                            "type": "string"
+                          }]
+                        },
+                        "type": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "type"
+                      ]
+                    }
+                  },
+                }]
+              },
+              "protocolProfileBehavior": {
+                "type": "object",
+                "properties": {
+                  "disableBodyPruning": {
+                    "type": "boolean"
+                  }
+                },
+              },
+              "request": {
+                "type": "object",
+                "properties": {
+                  "method": {
+                    "type": "string"
+                  },
+                  "header": {
+                    "type": "array",
+                    "items": {}
+                  },
+                  "body": {
+                    "type": "object",
+                    "properties": {
+                      "mode": {
+                        "type": "string"
+                      },
+                      "urlencoded": {
+                        "type": "array",
+                        "items": [{
+                          "type": "object",
+                          "properties": {
+                            "key": {
+                              "type": "string"
+                            },
+                            "value": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "key",
+                          ]
+                        }]
+                      }
+                    },
+                    "required": [
+                      "mode",
+                    ]
+                  },
+                  "url": {
+                    "type": ["string", "object"]
+                  }
+                },
+                "required": [
+                  "method",
+                  "url"
+                ]
+              },
+              "response": {
+                "type": "array",
+                "items": {}
+              }
+            },
+            "required": [
+              "name",
+            ]
+          }]
+        },
+        "auth": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+          ]
+        },
+        "event": {
+          "type": "array",
+          "items": [{
+              "type": "object",
+              "properties": {
+                "listen": {
+                  "type": "string"
+                },
+                "script": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    },
+                    "exec": {
+                      "type": "array",
+                      "items": [{
+                        "type": "string"
+                      }]
+                    }
+                  },
+                  "required": [
+                    "type",
+                  ]
+                }
+              },
+            },
+            {
+              "type": "object",
+              "properties": {
+                "listen": {
+                  "type": "string"
+                },
+                "script": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    },
+                    "exec": {
+                      "type": "array",
+                      "items": [{
+                        "type": "string"
+                      }]
+                    }
+                  },
+                  "required": [
+                    "type",
+                  ]
+                }
+              },
+            }
+          ]
+        }
+      },
+      "required": [
+        "info",
+      ]
+    };
+    // 格式验证
+    let valid=Validator(data, schemaRule).valid;
+    if(!valid){
+      return {
+        error:'传入格式错误，请使用正确格式传入。'
+      }
+    }
     if (!data['info']) {
       return apiPostObject;
     }
