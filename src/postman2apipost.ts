@@ -1,6 +1,6 @@
 import { IPostman2ApiPost, Iheader, Ibody } from '../types/postman2apipost'
 
-const extractProjectInfo = (data: IPostman2ApiPost, apiPostObject: object) => {
+const extractProjectInfo = (data: IPostman2ApiPost, apiPostObject: object, version: number) => {
   const { info, event, auth, variable } = data;
   const { name, description } = info;
   // ToDo: 项目脚本
@@ -66,6 +66,7 @@ const extractProjectInfo = (data: IPostman2ApiPost, apiPostObject: object) => {
         type = 'noauth';
         break;
     }
+    apiPostAuth.type = type;
     if (apikey) {
       apiPostAuth.kv = {
         key: apikey['key'] || '',
@@ -73,8 +74,14 @@ const extractProjectInfo = (data: IPostman2ApiPost, apiPostObject: object) => {
       }
     }
     if (bearer) {
-      apiPostAuth.bearer = {
-        key: bearer['token'] || '',
+      if (version == 2) {
+        apiPostAuth.bearer = {
+          key: bearer['token'] || '',
+        }
+      } else if (bearer instanceof Array && bearer.length > 0) {
+        apiPostAuth.bearer = {
+          key: bearer[0]['value'] || '',
+        }
       }
     }
     if (basic) {
@@ -121,7 +128,7 @@ const extractEnv = (data: IPostman2ApiPost, apiPostObject: object) => {
   //     }]
   apiPostObject['env'] = [];
 }
-const postmanTree2apipostTree = (apipostTree: Array<any>, postmanTree: Array<any>) => {
+const postmanTree2apipostTree = (apipostTree: Array<any>, postmanTree: Array<any>, version: number) => {
   if (postmanTree.length > 0) {
     postmanTree.forEach(item => {
       let target = {};
@@ -195,6 +202,9 @@ const postmanTree2apipostTree = (apipostTree: Array<any>, postmanTree: Array<any
           if (request['url']['description']) {
             description = request['url']['description'];
           }
+          if (typeof request['url'] == 'string') {
+            url = request['url'];
+          }
         }
         if (request['description']) {
           description = request['description'];
@@ -212,8 +222,8 @@ const postmanTree2apipostTree = (apipostTree: Array<any>, postmanTree: Array<any
             });
           })
         }
-        if (request['body']) {
-          switch (request['body']) {
+        if (request['body'] && request['body']['mode']) {
+          switch (request['body']['mode']) {
             case 'formdata':
               body.mode = 'form-data';
               break;
@@ -316,7 +326,7 @@ const postmanTree2apipostTree = (apipostTree: Array<any>, postmanTree: Array<any
           },
         }
         target['children'] = [];
-        postmanTree2apipostTree(target['children'], item['item']);
+        postmanTree2apipostTree(target['children'], item['item'], version);
       } else {
         target = {
           name: item['name'] || '新建接口',
@@ -354,34 +364,36 @@ const postmanTree2apipostTree = (apipostTree: Array<any>, postmanTree: Array<any
     });
   }
 }
-const extractApis = (data: IPostman2ApiPost, apiPostObject: object) => {
+const extractApis = (data: IPostman2ApiPost, apiPostObject: object, version: number) => {
   const { item } = data;
   apiPostObject['apis'] = [];
   if (item && item instanceof Array) {
-    postmanTree2apipostTree(apiPostObject['apis'], item);
+    postmanTree2apipostTree(apiPostObject['apis'], item, version);
   }
 }
 export const Postman2ApiPost = (data: IPostman2ApiPost) => {
   let apiPostObject: object = {};
   try {
     if (!data['info']) {
-      return JSON.stringify(apiPostObject);
+      return apiPostObject;
     }
+    let info = data['info'];
+    let { schema } = info;
     let version = 2;
     // 判断postman版本
-    if (data['schema'] && typeof data['schema'] === 'string' && data['schema'].indexOf('v2.1.0') != -1) {
+    if (schema && typeof schema === 'string' && schema.indexOf('v2.1.0') != -1) {
       version = 2.1;
     }
     // 提取项目信息
-    extractProjectInfo(data, apiPostObject);
+    extractProjectInfo(data, apiPostObject, version);
     // 提取环境信息
     extractEnv(data, apiPostObject);
     // 提取接口信息以及目录信息
-    extractApis(data, apiPostObject);
+    extractApis(data, apiPostObject, version);
   } catch (error) {
     console.log('异常信息:', error);
   }
-  return JSON.stringify(apiPostObject);
+  return apiPostObject;
 }
 
 export default Postman2ApiPost;
