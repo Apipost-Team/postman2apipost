@@ -395,12 +395,12 @@ export const Postman2ApiPost = (data: IPostman2ApiPost) => {
     if (!data['info']) {
       return apiPostObject;
     }
-    let info = data['info'];
-    let { schema } = info;
-    // 判断postman版本
-    if (schema && typeof schema === 'string' && schema.indexOf('v2.1.0') != -1) {
-      version = 2.1;
-    }
+//     let info = data['info'];
+//     let { schema } = info;
+//     // 判断postman版本
+//     if (schema && typeof schema === 'string' && schema.indexOf('v2.1.0') != -1) {
+//       version = 2.1;
+//     }
     // 提取项目信息
     extractProjectInfo(data, apiPostObject, version);
     // 提取环境信息
