@@ -15,7 +15,7 @@ npm i postman2apipost
 需引入：
 
 ```js
-import { str2testData } from 'postman2apipost';
+import { postman2apipost } from 'postman2apipost';
 let postmanJson={
 	"info": {
 		"_postman_id": "ea70cad4-dd70-41ee-96b9-c52bc66e3e23",
