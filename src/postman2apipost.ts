@@ -2,6 +2,14 @@ let fs = require('fs');
 let path = require('path');
 import { IPostman2ApiPost, Iheader, Ibody } from '../types/postman2apipost';
 
+const ConvertResult = (status: string, message: string, data: any = '') => {
+  return {
+    status,
+    message,
+    data
+  }
+}
+
 const extractProjectInfo = (data: IPostman2ApiPost, apiPostObject: object, version: number) => {
   const { info, event, auth, variable } = data;
   const { name, description } = info;
@@ -378,29 +386,18 @@ export const Postman2ApiPost = (data: IPostman2ApiPost) => {
   try {
     let version = 2;
     var Validator = require('jsonschema').validate;
-    var schemaRule2=JSON.parse(fs.readFileSync(path.join(__dirname, 'postman_schema2.0.json'), 'utf-8'));
-    var schemaRule2_1=JSON.parse(fs.readFileSync(path.join(__dirname, 'postman_schema2.1.json'), 'utf-8'));
+    var schemaRule2 = JSON.parse(fs.readFileSync(path.join(__dirname, 'postman_schema2.0.json'), 'utf-8'));
+    var schemaRule2_1 = JSON.parse(fs.readFileSync(path.join(__dirname, 'postman_schema2.1.json'), 'utf-8'));
     // 格式验证
-    let valid_2=Validator(data, schemaRule2).valid;
-    let valid_2_1=Validator(data, schemaRule2_1).valid;
-    if(valid_2){
-      version=2;
-    }else if(valid_2_1){
+    let valid_2 = Validator(data, schemaRule2).valid;
+    let valid_2_1 = Validator(data, schemaRule2_1).valid;
+    if (valid_2) {
+      version = 2;
+    } else if (valid_2_1) {
       version = 2.1;
-    }else{
-      return {
-        error:'传入格式错误，请使用正确格式传入。'
-      }
+    } else {
+      return ConvertResult('error', '传入格式错误，请使用正确格式传入。');
     }
-    if (!data['info']) {
-      return apiPostObject;
-    }
-//     let info = data['info'];
-//     let { schema } = info;
-//     // 判断postman版本
-//     if (schema && typeof schema === 'string' && schema.indexOf('v2.1.0') != -1) {
-//       version = 2.1;
-//     }
     // 提取项目信息
     extractProjectInfo(data, apiPostObject, version);
     // 提取环境信息
@@ -408,9 +405,9 @@ export const Postman2ApiPost = (data: IPostman2ApiPost) => {
     // 提取接口信息以及目录信息
     extractApis(data, apiPostObject, version);
   } catch (error) {
-    console.log('异常信息:', error);
+    return ConvertResult('error', '异常信息:' + error)
   }
-  return apiPostObject;
+  return ConvertResult('success', '', apiPostObject);
 }
 
 export default Postman2ApiPost;
