@@ -144,15 +144,9 @@ const postmanTree2apipostTree = (apipostTree: Array<any>, postmanTree: Array<any
       let target = {};
       let method = 'GET';
       let url = '';
-      let header: Iheader = {
-        parameter: []
-      };
-      let query: Iheader = {
-        parameter: []
-      }
-      let resful: Iheader = {
-        parameter: []
-      }
+      let header: any = [];
+      let query: any = []
+      let resful: any = []
       let body: Ibody = {
         mode: 'none',
         parameter: [],
@@ -185,26 +179,26 @@ const postmanTree2apipostTree = (apipostTree: Array<any>, postmanTree: Array<any
           }
           if (request['url']['query'] && request['url']['query'] instanceof Array) {
             request['url']['query'].forEach(item => {
-              item && query.parameter.push({
+              item && query.push({
                 is_checked: "1",
                 type: 'Text',
                 key: item['key'] || "",
                 value: item['value'] || "",
                 not_null: "1",
-                description: "",
+                description: item?.description || "",
                 field_type: "Text"
               });
             })
           }
           if (request['url']['variable'] && request['url']['variable'] instanceof Array) {
             request['url']['variable'].forEach(item => {
-              item && resful.parameter.push({
+              item && resful.push({
                 is_checked: "1",
                 type: 'Text',
                 key: item['key'] || "",
                 value: item['value'] || "",
                 not_null: "1",
-                description: "",
+                description:item?.description ||  "",
                 field_type: "Text"
               });
             })
@@ -221,13 +215,13 @@ const postmanTree2apipostTree = (apipostTree: Array<any>, postmanTree: Array<any
         }
         if (request['header'] && request['header'] instanceof Array) {
           request['header'].forEach(item => {
-            item && header.parameter.push({
+            item && header.push({
               is_checked: "1",
               type: 'Text',
               key: item['key'] || "",
               value: item['value'] || "",
               not_null: "1",
-              description: "",
+              description: item?.description || "",
               field_type: "Text"
             });
           })
@@ -257,7 +251,7 @@ const postmanTree2apipostTree = (apipostTree: Array<any>, postmanTree: Array<any
                 key: item['key'] || "",
                 value: item['value'] || "",
                 not_null: "1",
-                description: "",
+                description:item?.description || "",
                 field_type: "Text"
               });
             });
@@ -407,6 +401,7 @@ export const Postman2ApiPost = (data: IPostman2ApiPost) => {
   } catch (error) {
     return ConvertResult('error', '异常信息:' + error)
   }
+  console.log('project',JSON.stringify(apiPostObject));
   return ConvertResult('success', '', apiPostObject);
 }
 
