@@ -1,6 +1,6 @@
 {
   "name": "postman2apipost",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "postman2apipost",
   "main": "dist/index.js",
   "files": [
@@ -68,5 +68,9 @@
   },
   "author": "xbw",
   "license": "MIT",
-  "keywords": ["apipost", "postman", "postman2"]
+  "keywords": [
+    "apipost",
+    "postman",
+    "postman2"
+  ]
 }
