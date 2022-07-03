@@ -1,4 +1,4 @@
-{
+export default {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "id": "https://schema.getpostman.com/json/collection/v2.0.0/",
   "type": "object",

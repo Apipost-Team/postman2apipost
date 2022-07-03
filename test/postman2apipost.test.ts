@@ -37,7 +37,8 @@ describe('works', () => {
               "header": [{
                 "key": "ikk",
                 "value": "123",
-                "type": "text"
+                "type": "text",
+                "description":"123"
               }],
               "body": {
                 "mode": "formdata",

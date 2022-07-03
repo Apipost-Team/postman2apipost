@@ -1,6 +1,6 @@
-let fs = require('fs');
-let path = require('path');
 import { IPostman2ApiPost, Iheader, Ibody } from '../types/postman2apipost';
+import schemaRule2 from './postman_schema2.0';
+import schemaRule2_1 from './postman_schema2.1';
 
 const ConvertResult = (status: string, message: string, data: any = '') => {
   return {
@@ -380,8 +380,6 @@ export const Postman2ApiPost = (data: IPostman2ApiPost) => {
   try {
     let version = 2;
     var Validator = require('jsonschema').validate;
-    var schemaRule2 = JSON.parse(fs.readFileSync(path.join(__dirname, 'postman_schema2.0.json'), 'utf-8'));
-    var schemaRule2_1 = JSON.parse(fs.readFileSync(path.join(__dirname, 'postman_schema2.1.json'), 'utf-8'));
     // 格式验证
     let valid_2 = Validator(data, schemaRule2).valid;
     let valid_2_1 = Validator(data, schemaRule2_1).valid;
