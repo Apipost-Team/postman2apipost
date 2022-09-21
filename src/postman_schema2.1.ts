@@ -712,7 +712,8 @@ export default {
                                                           "type": {
                                                               "type": "string",
                                                               "enum": [
-                                                                  "text"
+                                                                  "text",
+                                                                  "default",
                                                               ]
                                                           },
                                                           "contentType": {
@@ -1102,7 +1103,8 @@ export default {
                       "string",
                       "boolean",
                       "any",
-                      "number"
+                      "number",
+                      "default"
                   ]
               },
               "name": {
