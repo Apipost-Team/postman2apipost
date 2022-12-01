@@ -629,9 +629,7 @@ export default {
                                                         "$ref": "#/definitions/description"
                                                     }
                                                 },
-                                                "required": [
-                                                    "key"
-                                                ]
+                                                "required": []
                                             }
                                         },
                                         "formdata": {
@@ -668,9 +666,7 @@ export default {
                                                                 "$ref": "#/definitions/description"
                                                             }
                                                         },
-                                                        "required": [
-                                                            "key"
-                                                        ]
+                                                        "required": []
                                                     },
                                                     {
                                                         "properties": {
@@ -709,9 +705,7 @@ export default {
                                                                 "$ref": "#/definitions/description"
                                                             }
                                                         },
-                                                        "required": [
-                                                            "key"
-                                                        ]
+                                                        "required": []
                                                     }
                                                 ]
                                             }
@@ -1070,20 +1064,13 @@ export default {
             },
             "anyOf": [
                 {
-                    "required": [
-                        "id"
-                    ]
+                    "required": []
                 },
                 {
-                    "required": [
-                        "key"
-                    ]
+                    "required": []
                 },
                 {
-                    "required": [
-                        "id",
-                        "key"
-                    ]
+                    "required": []
                 }
             ]
         },
@@ -1118,11 +1105,7 @@ export default {
                         },
                         "meta": {}
                     },
-                    "required": [
-                        "major",
-                        "minor",
-                        "patch"
-                    ]
+                    "required": []
                 },
                 {
                     "type": "string"
