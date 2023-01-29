@@ -141,6 +141,10 @@ export default {
         "oneOf": { "$ref": "#/definitions/schemaArray" },
         "not": { "$ref": "#" }
     },
+    "required": [
+        "info",
+        "item"
+    ],
     "dependencies": {
         "exclusiveMaximum": ["maximum"],
         "exclusiveMinimum": ["minimum"]
