@@ -338,13 +338,13 @@ const postmanTree2apipostTree = (apipostTree: Array<any>, postmanTree: Array<any
             query: [],
             body: [],
             auth,
-            description
-          },
-          script: {
-            pre_script: pre_script,
-            test: test,
-            pre_script_switch: 1,
-            test_switch: 1,
+            description,
+            script: {
+              pre_script: pre_script,
+              test: test,
+              pre_script_switch: 1,
+              test_switch: 1,
+            },
           },
         }
         target['children'] = [];
