@@ -17,17 +17,17 @@ const extractProjectInfo = (data: IPostman2ApiPost, apiPostObject: object, versi
   let pre_script = '';
   let test = '';
   let apiPostVariable = {};
-  // if (event && event instanceof Array) {
-  //   event.forEach(item => {
-  //     if (item['script'] && item['script']['exec'] && item['script']['exec'] instanceof Array) {
-  //       if (item['listen'] && item['listen'] == 'prerequest') {
-  //         pre_script = item['script']['exec'].join('\n');
-  //       } else if (item['listen'] && item['listen'] == 'test') {
-  //         test = item['script']['exec'].join('\n');
-  //       }
-  //     }
-  //   });
-  // }
+  if (event && event instanceof Array) {
+    event.forEach(item => {
+      if (item['script'] && item['script']['exec'] && item['script']['exec'] instanceof Array) {
+        if (item['listen'] && item['listen'] == 'prerequest') {
+          pre_script = item['script']['exec'].join('\n');
+        } else if (item['listen'] && item['listen'] == 'test') {
+          test = item['script']['exec'].join('\n');
+        }
+      }
+    });
+  }
   // 项目变量
   if (variable && variable instanceof Array) {
     variable.forEach(item => {
@@ -198,7 +198,7 @@ const postmanTree2apipostTree = (apipostTree: Array<any>, postmanTree: Array<any
                 key: item['key'] || "",
                 value: item['value'] || "",
                 not_null: "1",
-                description:item?.description ||  "",
+                description: item?.description || "",
                 field_type: "Text"
               });
             })
@@ -241,7 +241,11 @@ const postmanTree2apipostTree = (apipostTree: Array<any>, postmanTree: Array<any
               break;
           }
           if (request['body']['raw']) {
-            body.raw = request['body']['raw'];
+            if (Object.prototype.toString.call(request['body']['raw']) == 'object Object') {
+              body.raw = JSON.stringify(request['body']['raw']);
+            } else {
+              body.raw = String(request['body']['raw']);
+            }
           }
           if (request['body']['urlencoded'] && request['body']['urlencoded'] instanceof Array) {
             request['body']['urlencoded'].forEach(item => {
@@ -251,7 +255,7 @@ const postmanTree2apipostTree = (apipostTree: Array<any>, postmanTree: Array<any
                 key: item['key'] || "",
                 value: item['value'] || "",
                 not_null: "1",
-                description:item?.description || "",
+                description: item?.description || "",
                 field_type: "Text"
               });
             });
@@ -311,6 +315,20 @@ const postmanTree2apipostTree = (apipostTree: Array<any>, postmanTree: Array<any
       // const { method, url } = request || {};
       // 目录
       if (item['item'] && item['item'] instanceof Array) {
+        // 解析目录脚本
+        let pre_script = '';
+        let test = '';
+        if (item?.event instanceof Array) {
+          item.event.forEach((i: any) => {
+            if (i['script'] && i['script']['exec'] && i['script']['exec'] instanceof Array) {
+              if (i['listen'] && i['listen'] == 'prerequest') {
+                pre_script = i['script']['exec'].join('\n');
+              } else if (i['listen'] && i['listen'] == 'test') {
+                test = i['script']['exec'].join('\n');
+              }
+            }
+          });
+        }
         // 目录
         target = {
           name: item['name'] || '新建目录',
@@ -323,8 +341,8 @@ const postmanTree2apipostTree = (apipostTree: Array<any>, postmanTree: Array<any
             description
           },
           script: {
-            pre_script: '',
-            test: '',
+            pre_script: pre_script,
+            test: test,
             pre_script_switch: 1,
             test_switch: 1,
           },
@@ -332,6 +350,20 @@ const postmanTree2apipostTree = (apipostTree: Array<any>, postmanTree: Array<any
         target['children'] = [];
         postmanTree2apipostTree(target['children'], item['item'], version);
       } else {
+        // 解析接口脚本
+        let pre_script = '';
+        let test = '';
+        if (item?.event instanceof Array) {
+          item.event.forEach((i: any) => {
+            if (i['script'] && i['script']['exec'] && i['script']['exec'] instanceof Array) {
+              if (i['listen'] && i['listen'] == 'prerequest') {
+                pre_script = i['script']['exec'].join('\n');
+              } else if (i['listen'] && i['listen'] == 'test') {
+                test = i['script']['exec'].join('\n');
+              }
+            }
+          });
+        }
         target = {
           name: item['name'] || '新建接口',
           target_type: 'api',
@@ -345,8 +377,8 @@ const postmanTree2apipostTree = (apipostTree: Array<any>, postmanTree: Array<any
             body,
             auth,
             event: {
-              pre_script: '',
-              test: '',
+              pre_script: pre_script,
+              test: test,
             },
             description: description
           },
@@ -399,7 +431,7 @@ export const Postman2ApiPost = (data: IPostman2ApiPost) => {
   } catch (error) {
     return ConvertResult('error', '异常信息:' + error)
   }
-  console.log('project',JSON.stringify(apiPostObject));
+  console.log('project', JSON.stringify(apiPostObject));
   return ConvertResult('success', '', apiPostObject);
 }
 
