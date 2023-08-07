@@ -78,11 +78,15 @@ const extractProjectInfo = (data: IPostman2ApiPost, apiPostObject: object, versi
         break;
     }
     apiPostAuth.type = type;
-    if (apikey) {
-      apiPostAuth.kv = {
-        key: apikey['key'] || '',
-        value: apikey['value'] || ''
-      }
+    if (apikey && isArray(apikey)) {
+      apikey.forEach(item=>{
+        if(item?.key == 'key'){
+          apiPostAuth.kv.key = item?.value || ''
+        }
+        if(item?.key == 'value'){
+          apiPostAuth.kv.value = item?.value || ''
+        }
+      })
     }
     if (bearer) {
       if (version == 2) {
@@ -95,11 +99,15 @@ const extractProjectInfo = (data: IPostman2ApiPost, apiPostObject: object, versi
         }
       }
     }
-    if (basic) {
-      apiPostAuth.basic = {
-        username: basic['username'] || '',
-        password: basic['password'] || ''
-      }
+    if (basic && isArray(basic)) {
+      basic.forEach(item=>{
+        if(item?.key == 'username'){
+          apiPostAuth.basic.username = item?.value || ''
+        }
+        if(item?.key == 'password'){
+          apiPostAuth.basic.password = item?.value || ''
+        }
+      })
     }
   }
   apiPostObject['project'] = {
