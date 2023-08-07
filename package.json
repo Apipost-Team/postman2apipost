@@ -1,6 +1,6 @@
 {
   "name": "postman2apipost",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "postman2apipost",
   "main": "dist/index.js",
   "files": [
