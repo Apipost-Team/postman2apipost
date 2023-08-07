@@ -1,3 +1,4 @@
+import { isArray } from 'lodash';
 import { IPostman2ApiPost, Iheader, Ibody } from '../types/postman2apipost';
 import schemaRule2 from './postman_schema2.0';
 import schemaRule2_1 from './postman_schema2.1';
@@ -293,22 +294,32 @@ const postmanTree2apipostTree = (apipostTree: Array<any>, postmanTree: Array<any
               type = 'noauth';
               break;
           }
-          if (apikey) {
-            auth.kv = {
-              key: apikey['key'] || '',
-              value: apikey['value'] || ''
-            }
+          if (apikey && isArray(apikey)) {
+            apikey.forEach(item=>{
+              if(item?.key == 'key'){
+                auth.kv.key = item?.value || ''
+              }
+              if(item?.key == 'value'){
+                auth.kv.value = item?.value || ''
+              }
+            })
           }
-          if (bearer) {
-            auth.bearer = {
-              key: bearer['token'] || '',
-            }
+          if (bearer && isArray(bearer)) {
+            bearer.forEach(item=>{
+              if(item?.key == 'token'){
+                auth.bearer.key = item?.value || ''
+              }
+            })
           }
-          if (basic) {
-            auth.basic = {
-              username: basic['username'] || '',
-              password: basic['password'] || ''
-            }
+          if (basic && isArray(basic)) {
+            basic.forEach(item=>{
+              if(item?.key == 'username'){
+                auth.basic.username = item?.value || ''
+              }
+              if(item?.key == 'password'){
+                auth.basic.password = item?.value || ''
+              }
+            })
           }
         }
       }

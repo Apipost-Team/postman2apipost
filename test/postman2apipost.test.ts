@@ -252,112 +252,137 @@ describe('works', () => {
   }
   const data2_1={
     "info": {
-      "_postman_id": "c1d93628-467d-4cd3-b089-a0f8ceaa00aa",
-      "name": "默认离线项目",
-      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "_exporter_id": "5424870"
+      "name": "1030698842 的项目",
+      "description": "",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
-    "item": [{
-        "name": "目录12312312321",
-        "item": [],
-        "event": [{
-            "listen": "prerequest",
-            "script": {
-              "type": "text/javascript",
-              "exec": [
-                "12321321312"
-              ]
-            }
-          },
-          {
-            "listen": "test",
-            "script": {
-              "type": "text/javascript",
-              "exec": [
-                "12321321312"
-              ]
-            }
-          }
-        ]
-      },
-      {
-        "name": "新建接口test",
-        "event": [{
-            "listen": "prerequest",
-            "script": {
-              "exec": [
-                "12321321"
-              ],
-              "type": "text/javascript"
-            }
-          },
-          {
-            "listen": "test",
-            "script": {
-              "exec": [
-                "21321321"
-              ],
-              "type": "text/javascript"
-            }
-          }
-        ],
-        "request": {
-          "auth": {
-            "type": "bearer",
-            "bearer": [{
-              "key": "token",
-              "value": "adsadsad",
-              "type": "string"
-            }]
-          },
-          "method": "POST",
-          "header": [],
-          "body": {
-            "mode": "raw",
-            "raw": "{\n\t\"adasdas\": \"子型性产为\",\n\t\"b12312\": \"率有去公\",\n\t\"DD\": \"方到快会电叫\",\n\t\"C123\": \"213\"\n}"
-          },
-          "url": {
-            "raw": ""
-          },
-          "description": "123213123"
-        },
-        "response": []
-      }
-    ],
+    "variable": [],
     "auth": {
-      "type": "apikey",
-      "apikey": [{
+      "type": "noauth",
+      "apikey": [
+        {
           "key": "value",
-          "value": "123",
+          "value": "",
           "type": "string"
         },
         {
           "key": "key",
-          "value": "123",
+          "value": "",
+          "type": "string"
+        }
+      ],
+      "bearer": [
+        {
+          "key": "token",
+          "value": "",
+          "type": "string"
+        }
+      ],
+      "basic": [
+        {
+          "key": "username",
+          "value": "",
+          "type": "string"
+        },
+        {
+          "key": "password",
+          "value": "",
           "type": "string"
         }
       ]
     },
-    "event": [{
-        "listen": "prerequest",
-        "script": {
-          "type": "text/javascript",
-          "exec": [
-            "12321312312"
-          ]
-        }
-      },
+    "env": [],
+    "item": [
       {
-        "listen": "test",
-        "script": {
-          "type": "text/javascript",
-          "exec": [
-            "21321321"
-          ]
+        "name": "新建接口",
+        "event": [
+          {
+            "listen": "prerequest",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "wewrew"
+              ]
+            }
+          },
+          {
+            "listen": "test",
+            "script": {
+              "type": "text/javascript",
+              "exec": [
+                "12312312"
+              ]
+            }
+          }
+        ],
+        "request": {
+          "method": "POST",
+          "url": {
+            "raw": "www.baidu.com?vvv=123213",
+            "host": [
+              "www",
+              "baidu",
+              "com"
+            ],
+            "query": [
+              {
+                "key": "vvv",
+                "value": "123213"
+              }
+            ],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "aaa",
+              "value": "12312321",
+              "type": "text"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n\t\"aa\": \"123133\",\n\t\"b\": \"123123\"\n}"
+          },
+          "auth": {
+            "type": "apikey",
+            "apikey": [
+              {
+                "key": "value",
+                "value": "123",
+                "type": "string"
+              },
+              {
+                "key": "key",
+                "value": "a",
+                "type": "string"
+              }
+            ],
+            "bearer": [
+              {
+                "key": "token",
+                "value": "",
+                "type": "string"
+              }
+            ],
+            "basic": [
+              {
+                "key": "username",
+                "value": "",
+                "type": "string"
+              },
+              {
+                "key": "password",
+                "value": "",
+                "type": "string"
+              }
+            ]
+          },
+          "description": ""
         }
       }
     ]
   }
+  
   
   
   
